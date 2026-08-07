@@ -4,11 +4,15 @@ use App\Http\Controllers\Api\ContactQueryController;
 use App\Http\Controllers\Api\EnquiryController;
 use App\Http\Controllers\Api\JobApplicationController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\LandownerController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\SiteVisitController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/enquiries', [EnquiryController::class, 'store'])
+    ->middleware('throttle:20,1');
+
+Route::post('/landowners', [LandownerController::class, 'store'])
     ->middleware('throttle:20,1');
 
 Route::post('/site-visits', [SiteVisitController::class, 'store'])

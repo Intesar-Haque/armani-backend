@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
 use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobPostingController;
+use App\Http\Controllers\Admin\LandownerController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProjectDirectorController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -56,6 +57,7 @@ Route::middleware('auth')->group(function () {
             ->name('bookings.documents.destroy');
 
         Route::resource('enquiries', EnquiryController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('landowners', LandownerController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('site-visits', SiteVisitController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('queries', ContactQueryController::class)
             ->only(['index', 'show', 'update', 'destroy'])

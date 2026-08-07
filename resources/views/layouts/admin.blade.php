@@ -54,6 +54,9 @@
             <a class="nav-link {{ request()->routeIs('admin.enquiries.*') ? 'active' : '' }}" href="{{ route('admin.enquiries.index') }}">
                 <i class="bi bi-envelope"></i> Enquiries
             </a>
+            <a class="nav-link {{ request()->routeIs('admin.landowners.*') ? 'active' : '' }}" href="{{ route('admin.landowners.index') }}">
+                <i class="bi bi-map"></i> Landowners
+            </a>
             <a class="nav-link {{ request()->routeIs('admin.site-visits.*') ? 'active' : '' }}" href="{{ route('admin.site-visits.index') }}">
                 <i class="bi bi-calendar-check"></i> Site Visits
             </a>
