@@ -27,6 +27,23 @@
                 <div class="text-muted small">Booked on</div>
                 <div class="fs-6">{{ $booking->booking_date->format('d M Y') }}</div>
             </div>
+            <div class="col-md-4">
+                <div class="text-muted small">Payment plan</div>
+                <div class="fs-6">{{ $booking->planLabel() }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-muted small">Property price</div>
+                <div class="fs-6">৳ {{ number_format((float) $booking->property_price, 2) }}</div>
+                @if ((float) $booking->surcharge_amount > 0)
+                    <small class="text-muted">+ ৳ {{ number_format((float) $booking->surcharge_amount, 2) }} additional</small>
+                @elseif ((float) $booking->discount_amount > 0)
+                    <small class="text-success">− ৳ {{ number_format((float) $booking->discount_amount, 2) }} full-payment discount</small>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="text-muted small">Down payment</div>
+                <div class="fs-6">৳ {{ number_format((float) $booking->down_payment, 2) }}</div>
+            </div>
         </div>
     </div>
 </div>
@@ -34,7 +51,7 @@
 <div class="row g-3 mb-3">
     <div class="col-md-3">
         <div class="stat-card">
-            <div class="label">Booking amount</div>
+            <div class="label">Total payable</div>
             <div class="value">৳ {{ number_format((float) $booking->total_amount, 2) }}</div>
         </div>
     </div>

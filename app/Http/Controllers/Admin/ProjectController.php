@@ -67,6 +67,8 @@ class ProjectController extends Controller
             'description' => ['nullable', 'string'],
             'base_price' => ['required', 'numeric', 'min:0'],
             'status' => ['required', 'in:' . implode(',', Project::STATUSES)],
+            'share_value' => ['nullable', 'numeric', 'min:0'],
+            'total_shares' => ['nullable', 'integer', 'min:1'],
         ]);
     }
 }

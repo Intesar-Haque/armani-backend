@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\BookingCreatedMail;
 use App\Mail\InstallmentPaidMail;
+use App\Models\Apartment;
 use App\Models\Booking;
 use App\Models\Document;
 use App\Models\Installment;
-use App\Models\Project;
 use App\Models\User;
 use App\Services\BookingService;
 use Illuminate\Contracts\View\View;
@@ -49,25 +49,29 @@ class BookingController extends Controller
     public function create(): View
     {
         return view('admin.bookings.create', [
-            'projects' => Project::orderBy('name')->get(),
+            'apartments' => Apartment::available()->with('project')->orderBy('floor_number')->orderBy('apartment_number')->get(),
             'clients' => User::where('role', User::ROLE_CLIENT)->orderBy('name')->get(),
+            'plans' => Booking::PLANS,
+            'bookingMoney' => Booking::BOOKING_MONEY,
+            'fullPaymentDiscount' => Booking::FULL_PAYMENT_DISCOUNT_PERCENT,
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
+        $planOptions = implode(',', array_merge([Booking::PAYMENT_TYPE_FULL], array_keys(Booking::PLANS)));
+
         $data = $request->validate([
-            'project_id' => ['required', 'exists:projects,id'],
+            'apartment_id' => ['required', 'exists:apartments,id'],
             'client_id' => ['nullable', 'exists:users,id'],
             'client_name' => ['required_without:client_id', 'nullable', 'string', 'max:150'],
             'client_email' => ['required', 'email', 'max:150'],
             'client_phone' => ['nullable', 'string', 'max:30'],
-            'unit_number' => ['nullable', 'string', 'max:60'],
-            'total_amount' => ['required', 'numeric', 'min:0'],
-            'booking_amount' => ['required', 'numeric', 'min:0', 'lte:total_amount'],
+            'booking_amount' => ['required', 'numeric', 'min:' . Booking::BOOKING_MONEY],
+            'down_payment' => ['nullable', 'numeric', 'min:0'],
+            'payment_plan' => ['required', 'in:' . $planOptions],
             'booking_date' => ['required', 'date'],
-            'installment_count' => ['required', 'integer', 'min:0', 'max:120'],
-            'first_installment_date' => ['required_if:installment_count,>,0', 'nullable', 'date'],
+            'first_installment_date' => ['required', 'date'],
             'notes' => ['nullable', 'string'],
         ]);
 
@@ -87,7 +91,7 @@ class BookingController extends Controller
 
     public function show(Booking $booking): View
     {
-        $booking->load(['project', 'client', 'installments.receipts', 'documents']);
+        $booking->load(['project', 'apartment', 'client', 'installments.receipts', 'documents']);
 
         return view('admin.bookings.show', [
             'booking' => $booking,
@@ -102,13 +106,22 @@ class BookingController extends Controller
             'status' => ['required', 'in:' . implode(',', Booking::STATUSES)],
             'notes' => ['nullable', 'string'],
         ]);
-        $booking->update($data);
+
+        if ($data['status'] === 'cancelled' && $booking->status !== 'cancelled') {
+            $booking->update(['notes' => $data['notes'] ?? $booking->notes]);
+            $this->bookings->cancelBooking($booking);
+        } else {
+            $booking->update($data);
+        }
 
         return back()->with('status', 'Booking updated.');
     }
 
     public function destroy(Booking $booking): RedirectResponse
     {
+        if ($booking->status !== 'cancelled') {
+            $booking->apartment?->update(['status' => Apartment::STATUS_AVAILABLE]);
+        }
         $booking->delete();
         return redirect()->route('admin.bookings.index')->with('status', 'Booking removed.');
     }

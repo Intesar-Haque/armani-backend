@@ -47,6 +47,10 @@
         </div>
         <button class="btn btn-primary w-100" type="submit">Log in</button>
     </form>
+
+    <p class="text-center mt-3 mb-0" style="font-size: 13px; color: #8b8f96;">
+        New customer? <a href="{{ route('register') }}" style="color: #c9a04a;">Register</a>
+    </p>
 </div>
 </body>
 </html>

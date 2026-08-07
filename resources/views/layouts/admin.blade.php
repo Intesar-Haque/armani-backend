@@ -45,6 +45,9 @@
             <a class="nav-link {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}" href="{{ route('admin.projects.index') }}">
                 <i class="bi bi-buildings"></i> Projects
             </a>
+            <a class="nav-link {{ request()->routeIs('admin.apartments.*') ? 'active' : '' }}" href="{{ route('admin.apartments.index') }}">
+                <i class="bi bi-building"></i> Apartments
+            </a>
             <a class="nav-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}">
                 <i class="bi bi-journal-check"></i> Bookings
             </a>
@@ -56,6 +59,21 @@
             </a>
             <a class="nav-link {{ request()->routeIs('admin.queries.*') ? 'active' : '' }}" href="{{ route('admin.queries.index') }}">
                 <i class="bi bi-chat-left-text"></i> Contact Queries
+            </a>
+            <a class="nav-link {{ request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.jobs.index') }}">
+                <i class="bi bi-briefcase"></i> Jobs
+            </a>
+            <a class="nav-link {{ request()->routeIs('admin.job-applications.*') ? 'active' : '' }}" href="{{ route('admin.job-applications.index') }}">
+                <i class="bi bi-person-badge"></i> Applications
+            </a>
+            <a class="nav-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}" href="{{ route('admin.posts.index') }}">
+                <i class="bi bi-newspaper"></i> Posts
+            </a>
+            <a class="nav-link {{ request()->routeIs('admin.share-assignments.*') ? 'active' : '' }}" href="{{ route('admin.share-assignments.index') }}">
+                <i class="bi bi-pie-chart"></i> Shares
+            </a>
+            <a class="nav-link {{ request()->routeIs('admin.project-directors.*') ? 'active' : '' }}" href="{{ route('admin.project-directors.index') }}">
+                <i class="bi bi-person-vcard"></i> Directors
             </a>
         </nav>
     </aside>

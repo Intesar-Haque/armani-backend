@@ -26,8 +26,43 @@
                         <div class="text-muted small">Booked on</div>
                         <div>{{ $booking->booking_date->format('d M Y') }}</div>
                     </div>
+                    @if ($booking->apartment)
                     <div class="col-md-4">
-                        <div class="text-muted small">Total value</div>
+                        <div class="text-muted small">Apartment</div>
+                        <div>{{ $booking->apartment->apartment_number }} · {{ $booking->apartment->floor_label }}</div>
+                        <small class="text-muted">{{ $booking->apartment->size_sqft }} sqft · {{ $booking->apartment->facing }} facing · ৳ {{ number_format((float) $booking->apartment->per_sqft_rate) }}/sqft</small>
+                    </div>
+                    @endif
+                    <div class="col-md-4">
+                        <div class="text-muted small">Payment plan</div>
+                        <div>{{ $booking->planLabel() }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted small">Property price (gross)</div>
+                        <div>৳ {{ number_format((float) $booking->property_price, 2) }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted small">Booking money</div>
+                        <div>৳ {{ number_format((float) $booking->booking_amount, 2) }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted small">Down payment</div>
+                        <div>৳ {{ number_format((float) $booking->down_payment, 2) }}</div>
+                    </div>
+                    @if ((float) $booking->surcharge_amount > 0)
+                    <div class="col-md-4">
+                        <div class="text-muted small">Additional ({{ rtrim(rtrim(number_format((float) $booking->surcharge_rate, 2), '0'), '.') }}%)</div>
+                        <div>৳ {{ number_format((float) $booking->surcharge_amount, 2) }}</div>
+                    </div>
+                    @endif
+                    @if ((float) $booking->discount_amount > 0)
+                    <div class="col-md-4">
+                        <div class="text-muted small">Full payment discount</div>
+                        <div class="text-success">− ৳ {{ number_format((float) $booking->discount_amount, 2) }}</div>
+                    </div>
+                    @endif
+                    <div class="col-md-4">
+                        <div class="text-muted small">Total payable</div>
                         <div class="fs-5">৳ {{ number_format((float) $booking->total_amount, 2) }}</div>
                     </div>
                     <div class="col-md-4">

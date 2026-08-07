@@ -17,6 +17,7 @@ class Installment extends Model
         'paid_amount',
         'due_date',
         'paid_at',
+        'last_reminder_sent_at',
         'payment_method',
         'payment_reference',
         'notes',
@@ -27,6 +28,7 @@ class Installment extends Model
         'paid_amount' => 'decimal:2',
         'due_date' => 'date',
         'paid_at' => 'datetime',
+        'last_reminder_sent_at' => 'date',
     ];
 
     public function booking(): BelongsTo

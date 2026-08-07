@@ -35,6 +35,18 @@
             <label class="form-label">Description</label>
             <textarea class="form-control" name="description" rows="4">{{ old('description', $project->description ?? '') }}</textarea>
         </div>
+        <div class="col-12"><hr></div>
+        <div class="col-md-6">
+            <label class="form-label">Share value (৳) <small class="text-muted">(optional)</small></label>
+            <input class="form-control" type="number" step="0.01" min="0" name="share_value" value="{{ old('share_value', $project->share_value ?? '') }}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Total shares <small class="text-muted">(optional)</small></label>
+            <input class="form-control" type="number" step="1" min="1" name="total_shares" value="{{ old('total_shares', $project->total_shares ?? '') }}">
+            @if (! empty($project) && $project->total_shares !== null)
+                <small class="text-muted">{{ $project->sharesAssigned() }} assigned · {{ $project->sharesRemaining() }} remaining</small>
+            @endif
+        </div>
     </div>
     <div class="mt-4 d-flex gap-2">
         <button class="btn btn-dark">Save</button>

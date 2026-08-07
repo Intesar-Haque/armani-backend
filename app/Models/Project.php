@@ -15,10 +15,13 @@ class Project extends Model
         'description',
         'base_price',
         'status',
+        'share_value',
+        'total_shares',
     ];
 
     protected $casts = [
         'base_price' => 'decimal:2',
+        'share_value' => 'decimal:2',
     ];
 
     public const STATUSES = ['active', 'sold_out', 'archived'];
@@ -35,5 +38,29 @@ class Project extends Model
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function apartments(): HasMany
+    {
+        return $this->hasMany(Apartment::class)->orderBy('floor_number')->orderBy('apartment_number');
+    }
+
+    public function shareAssignments(): HasMany
+    {
+        return $this->hasMany(ShareAssignment::class);
+    }
+
+    public function sharesAssigned(): int
+    {
+        return (int) $this->shareAssignments()->where('status', ShareAssignment::STATUS_ACTIVE)->sum('shares_count');
+    }
+
+    public function sharesRemaining(): ?int
+    {
+        if ($this->total_shares === null) {
+            return null;
+        }
+
+        return $this->total_shares - $this->sharesAssigned();
     }
 }
