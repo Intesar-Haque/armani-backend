@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LandownerController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\SiteVisitController;
+use App\Http\Controllers\Api\TrackController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/enquiries', [EnquiryController::class, 'store'])
@@ -20,6 +21,10 @@ Route::post('/site-visits', [SiteVisitController::class, 'store'])
 
 Route::post('/submit-query', [ContactQueryController::class, 'store'])
     ->middleware('throttle:20,1');
+
+// Browser-called relay for the optional click events (phone / WhatsApp / brochure).
+Route::post('/track', [TrackController::class, 'store'])
+    ->middleware('throttle:60,1');
 
 Route::get('/jobs', [JobController::class, 'index']);
 Route::get('/jobs/{jobPosting:slug}', [JobController::class, 'show']);

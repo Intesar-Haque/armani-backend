@@ -14,6 +14,16 @@ return [
     |
     */
 
+    // Meta (Facebook) Pixel + Conversions API. The access token is a secret:
+    // keep it in .env only, never in frontend code, GTM or git.
+    'meta' => [
+        'pixel_id' => env('META_PIXEL_ID'),
+        'capi_access_token' => env('META_CAPI_ACCESS_TOKEN'),
+        'graph_api_version' => env('META_GRAPH_API_VERSION', 'v26.0'),
+        // Set only while testing in Events Manager; must be blank at go-live.
+        'capi_test_event_code' => env('META_CAPI_TEST_EVENT_CODE'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteVisit;
+use App\Services\MetaConversionsApi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SiteVisitController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, MetaConversionsApi $meta): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -23,6 +24,10 @@ class SiteVisitController extends Controller
         ]);
 
         $visit = SiteVisit::create($data);
+
+        // Validation passed and the lead is saved, so this is a real lead:
+        // report it to Meta with the event_id the website already used.
+        $meta->send($request, 'Schedule', $data);
 
         return response()->json([
             'message' => 'Site visit request received. We will confirm shortly.',

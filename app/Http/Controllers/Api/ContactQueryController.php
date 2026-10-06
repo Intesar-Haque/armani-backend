@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactQuery;
+use App\Services\MetaConversionsApi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ContactQueryController extends Controller
 {
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, MetaConversionsApi $meta): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -20,6 +21,10 @@ class ContactQueryController extends Controller
         ]);
 
         $query = ContactQuery::create($data);
+
+        // Validation passed and the lead is saved, so this is a real lead:
+        // report it to Meta with the event_id the website already used.
+        $meta->send($request, 'Lead', $data);
 
         return response()->json([
             'message' => 'Thanks — we have received your message and will be in touch shortly.',
