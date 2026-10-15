@@ -20,6 +20,8 @@ class ShareAssignment extends Model
         'notes',
     ];
 
+    protected $hidden = ['notes'];
+
     protected $casts = [
         'share_value' => 'decimal:2',
         'total_amount' => 'decimal:2',

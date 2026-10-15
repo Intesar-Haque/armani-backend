@@ -15,6 +15,8 @@ class ProjectDirector extends Model
         'notes',
     ];
 
+    protected $hidden = ['notes'];
+
     protected $casts = [
         'appointed_date' => 'date',
     ];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ContactQueryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnquiryController;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('apartments', [ApartmentController::class, 'index'])->name('apartments.index');
         Route::put('apartments/{apartment}', [ApartmentController::class, 'update'])->name('apartments.update');
+
+        Route::resource('clients', ClientController::class)->only(['index', 'store']);
 
         Route::resource('bookings', BookingController::class)->except(['edit']);
         Route::post('bookings/{booking}/installments/{installment}/pay', [BookingController::class, 'payInstallment'])

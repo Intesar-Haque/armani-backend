@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -13,7 +14,8 @@ class ClientAccountService
      * Returns [User $client, ?string $plainPassword]. $plainPassword is
      * non-null when a new client user was created.
      *
-     * Expected input: client_email, client_name, client_phone (optional)
+     * Expected input: client_email, client_name, client_phone (optional),
+     * nid, address, father_name, mother_name (optional)
      */
     public function findOrCreate(array $input): array
     {
@@ -29,7 +31,7 @@ class ClientAccountService
                 'password' => Hash::make($generatedPassword),
                 'role' => User::ROLE_CLIENT,
                 'must_change_password' => true,
-            ]);
+            ] + Arr::only($input, ['nid', 'address', 'father_name', 'mother_name']));
         } elseif ($client->isAdmin()) {
             throw new \RuntimeException('An admin user already exists with that email.');
         }

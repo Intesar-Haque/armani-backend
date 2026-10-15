@@ -23,6 +23,8 @@ class Installment extends Model
         'notes',
     ];
 
+    protected $hidden = ['notes', 'last_reminder_sent_at'];
+
     protected $casts = [
         'amount_due' => 'decimal:2',
         'paid_amount' => 'decimal:2',

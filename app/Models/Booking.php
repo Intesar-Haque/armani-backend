@@ -29,6 +29,8 @@ class Booking extends Model
         'notes',
     ];
 
+    protected $hidden = ['notes'];
+
     protected $casts = [
         'property_price' => 'decimal:2',
         'total_amount' => 'decimal:2',

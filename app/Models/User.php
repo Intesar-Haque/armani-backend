@@ -8,16 +8,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_CLIENT = 'client';
 
-    protected $fillable = ['name', 'email', 'password', 'role', 'phone', 'must_change_password'];
+    protected $fillable = ['name', 'email', 'password', 'role', 'phone', 'nid', 'address', 'father_name', 'mother_name', 'must_change_password'];
 
     protected $hidden = ['password', 'remember_token'];
 

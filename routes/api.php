@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Client\AuthController as ClientAuthController;
+use App\Http\Controllers\Api\Client\PortalController as ClientPortalController;
 use App\Http\Controllers\Api\ContactQueryController;
 use App\Http\Controllers\Api\EnquiryController;
 use App\Http\Controllers\Api\JobApplicationController;
@@ -35,3 +37,20 @@ Route::post('/jobs/{jobPosting:slug}/apply', [JobApplicationController::class, '
 
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
+
+Route::prefix('client')->name('api.client.')->group(function () {
+    Route::post('login', [ClientAuthController::class, 'login'])->middleware('throttle:10,1')->name('login');
+
+    Route::middleware(['auth:sanctum', 'client'])->group(function () {
+        Route::post('logout', [ClientAuthController::class, 'logout'])->name('logout');
+        Route::get('me', [ClientAuthController::class, 'me'])->name('me');
+        Route::get('summary', [ClientPortalController::class, 'summary'])->name('summary');
+        Route::get('bookings', [ClientPortalController::class, 'bookings'])->name('bookings.index');
+        Route::get('bookings/{booking}', [ClientPortalController::class, 'booking'])->name('bookings.show');
+        Route::get('bookings/{booking}/documents/{document}/download', [ClientPortalController::class, 'downloadDocument'])
+            ->name('bookings.documents.download');
+        Route::get('installments', [ClientPortalController::class, 'installments'])->name('installments.index');
+        Route::get('shares', [ClientPortalController::class, 'shares'])->name('shares.index');
+        Route::get('directorships', [ClientPortalController::class, 'directorships'])->name('directorships.index');
+    });
+});

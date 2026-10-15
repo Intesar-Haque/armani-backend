@@ -29,6 +29,8 @@ class Document extends Model
         'notes',
     ];
 
+    protected $hidden = ['notes', 'file_path'];
+
     protected $casts = [
         'amount' => 'decimal:2',
         'issued_at' => 'date',

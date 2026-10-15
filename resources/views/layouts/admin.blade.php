@@ -48,6 +48,9 @@
             <a class="nav-link {{ request()->routeIs('admin.apartments.*') ? 'active' : '' }}" href="{{ route('admin.apartments.index') }}">
                 <i class="bi bi-building"></i> Apartments
             </a>
+            <a class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}" href="{{ route('admin.clients.index') }}">
+                <i class="bi bi-people"></i> Clients
+            </a>
             <a class="nav-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}" href="{{ route('admin.bookings.index') }}">
                 <i class="bi bi-journal-check"></i> Bookings
             </a>
